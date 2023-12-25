@@ -5,14 +5,16 @@
 #include "data_formatter.cpp"
 
 class MessageManager {
+private:
+    DataFormatter dataFormatter;
 public:
     MessageManager() {
         std::cout << "MessageManager created" << std::endl;
     }
-    Message* getMessage() {
-        return new Message("message", "test", "test_sender", 0);
+    std::map<int, Message*> getMessages() {
+        return dataFormatter.getMessages();
     }
     bool hasMessages() {
-        return true;
+        return dataFormatter.hasMessages();
     }
 };

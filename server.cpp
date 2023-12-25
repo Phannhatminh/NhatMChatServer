@@ -27,14 +27,17 @@ public:
     int start() {
         while(true) {
             if (messageManager.hasMessages()) {
-                Message* message = messageManager.getMessage();
-                if (message -> getType() == "chat_message") {
-                    broadcastMessage(message);
+                std::map<int, Message*> messages = messageManager.getMessages();
+                for (int i = 0; i < messages.size(); i++) {
+                    Message* msg = messages[i];
+                    if (msg -> getType() == "chat_message") {
+                        broadcastMessage(msg);
+                    }
+                    if (msg -> getType() == "login_message") {
+                        userManager.addUser(msg -> getSender(), msg -> getSenderID());
+                    }
+                    std::cout << msg -> getContent() << std::endl;
                 }
-                if (message -> getType() == "login_message") {
-                    userManager.addUser(message -> getSender(), message -> getSenderID());
-                }
-                std::cout << message -> getContent() << std::endl;
             }
         }
         return 0;
