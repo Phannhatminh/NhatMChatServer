@@ -4,6 +4,7 @@
 #include <vector>
 
 //class for managing connections
+//layer 5
 class ConnectionManager {
 public:
     ConnectionManager() {

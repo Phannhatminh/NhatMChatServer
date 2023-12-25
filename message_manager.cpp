@@ -5,6 +5,7 @@
 #include "data_formatter.cpp"
 
 //class for managing messages
+//Layer 7
 class MessageManager {
 private:
     DataFormatter dataFormatter; // data formatter

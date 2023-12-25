@@ -5,6 +5,8 @@
 #include "message.cpp"
 #include "connection_manager.cpp"
 
+//Layer 6
+//class for formatting data
 class DataFormatter {
 private:
     std::map<int, Message*> messages;

@@ -5,6 +5,7 @@
 #include "message_manager.cpp"
 
 //class for managing users
+//Layer 7
 class UserManager { 
 private:
     std::map<std::string, int> users; // username, ID

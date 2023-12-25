@@ -3,6 +3,7 @@
 #include "user_manager.cpp"
 
 // class Server for handling all the messages
+//Layer 7
 class Server {
 private:
     UserManager userManager; // for handling all the users
