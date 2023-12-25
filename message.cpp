@@ -3,7 +3,7 @@
 #include <map>
 #include <vector>
 
-
+//class for constructing messages
 class Message {
 private:
     std::string content;

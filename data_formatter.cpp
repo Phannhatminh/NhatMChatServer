@@ -10,7 +10,7 @@ private:
     std::map<int, Message*> messages;
     ConnectionManager connectionManager;
 
-    void parseMessage(char* message) {
+    void parseMessage(char* message) { // parse the message, will replace with asn1 later
         std::string content = "";
         std::string type = "";
         std::string sender = "";
@@ -57,7 +57,7 @@ public:
     DataFormatter() {
         std::cout << "DataFormatter created" << std::endl;
     }
-    std::map<int, Message*> getMessages() {
+    std::map<int, Message*> getMessages() { // get the messages
         if (messages.size() == 0) {
             char* msg = connectionManager.getMessage();
             if (msg != NULL) {
@@ -66,7 +66,7 @@ public:
         }
         return messages;
     }
-    void addMessage(Message* message) {
+    void addMessage(Message* message) { // add a message
         messages[messages.size()] = message;
     }
     bool hasMessages() {

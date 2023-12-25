@@ -3,6 +3,7 @@
 #include <map>
 #include <vector>
 
+//class for managing connections
 class ConnectionManager {
 public:
     ConnectionManager() {
