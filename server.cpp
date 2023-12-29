@@ -1,46 +1,42 @@
 #include <iostream>
 #include <string>
-#include "user_manager.cpp"
+#include "user_handler.cpp"
+#include "data_formater.cpp"
 
-// class Server for handling all the messages
-//Layer 7
 class Server {
 private:
-    UserManager userManager; // for handling all the users
-    MessageManager messageManager; // for handling all the messages
-    int send(int UserID, Message* message) { // for sending a message to a user
-        std::cout << "Sending message to user " << UserID << std::endl;
-        return 0;
-    }
+    UserHandler* userHandler;
+    DataFormater* data_formater;
+    Parser* parser;
 public:
     Server() {
-        std::cout << "Server created" << std::endl; 
+        std::cout << "Server created\n";
     }
     ~Server() {
-        std::cout << "Server destroyed" << std::endl;
+        std::cout << "Server destroyed\n";
     }
-    int broadcastMessage(Message* message) { // for broadcasting a message to all users
-        std::map<std::string, int> my_map = userManager.getUsers();
-        for (auto it = my_map.begin(); it != my_map.end(); ++it) {
-            send(it->second, message);
-        }
+    using CallbackFunction = void (Server::*)();
+    int send(Message* message) {
+        return data_formater->send(encode(message));
     }
-    int start() {
-        while(true) {
-            if (messageManager.hasMessages()) { // if there are messages
-                std::map<int, Message*> messages = messageManager.getMessages(); // get the messages
-                for (int i = 0; i < messages.size(); i++) { // for each message
-                    Message* msg = messages[i];
-                    if (msg -> getType() == "chat_message") { // if it is a chat message
-                        broadcastMessage(msg); // broadcast it
-                    }
-                    if (msg -> getType() == "login_message") { // if it is a login message
-                        userManager.addUser(msg -> getSender(), msg -> getSenderID()); // add the user
-                    }
-                    std::cout << msg -> getContent() << std::endl;
-                }
-            }
-        }
+    Message* parse(char* buffer) {
+        return parser->parse(buffer);
+    }
+    char* encode(Message* message) {
+        return new char[1];
+    }
+    int handleMessage(Message* message) {
+        return 0;
+    }
+    int listenForLogin() {
+        data_formater->setMessageAvailableCallback(onLoginRequest);
+        data_formater->onMessageAvailable();
+    }
+    static int onLoginRequest() {
+        std::cout << "onLoginRequest\n";
+        return 0;
+    }
+    static int onChatMessage() {
         return 0;
     }
 };

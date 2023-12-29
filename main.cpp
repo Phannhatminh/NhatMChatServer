@@ -1,11 +1,8 @@
 #include <iostream>
-#include <string>
 #include "server.cpp"
 
-int main()
-{
+int main() {
     Server server;
-    std::cout << "Hello World!" << std::endl;
-    server.start();
+    std::cout << "Hello, World!\n";
     return 0;
 }
