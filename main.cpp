@@ -6,3 +6,5 @@ int main() {
     std::cout << "Hello, World!\n";
     return 0;
 }
+
+// Next task: make all the component singleton and run the server
