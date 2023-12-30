@@ -5,6 +5,7 @@
 
 class SessionManager {
 private:
+    CallbackFunction callback;
     std::map<std::string, int> sessions;
     Parser* parser;
 public:
@@ -29,7 +30,24 @@ public:
     bool checkSession() {
         return true;
     }
-    int haveNoSession(int (*callback)(int (*callback)()), int (*back)()) {
-        return callback(back);
+    int haveNoSession() {
+        return callback();
+    }
+    void setCallback(CallbackFunction cb) {
+        callback = cb;
+    }
+    int onRecieveMessage(char* buffer) {
+        Message* message = parse(buffer);
+        if (checkSession()) {
+            callback(); //callback to the data_formater for the data_formater to handle the message's type.
+            send(encode(message, buffer));
+        }
+    }
+    int onLoginRequest(char* buffer) {
+        Message* message = parse(buffer);
+        if (checkSession()) {
+            callback(); //callback to the data_formater for the dataformater to call to the server
+            send(encode(message, buffer));
+        }
     }
 };

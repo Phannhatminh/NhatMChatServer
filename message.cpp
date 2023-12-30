@@ -1,4 +1,5 @@
 #include <iostream>
+using CallbackFunction = int (*)();
 
 class Message {
 public:

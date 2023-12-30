@@ -8,14 +8,7 @@ private:
     UserHandler* userHandler;
     DataFormater* data_formater;
     Parser* parser;
-public:
-    Server() {
-        std::cout << "Server created\n";
-    }
-    ~Server() {
-        std::cout << "Server destroyed\n";
-    }
-    using CallbackFunction = void (Server::*)();
+
     int send(Message* message) {
         return data_formater->send(encode(message));
     }
@@ -28,15 +21,30 @@ public:
     int handleMessage(Message* message) {
         return 0;
     }
+    int handleLoginRequest() {
+        return 0;
+    }
+public:
+    Server() {
+        std::cout << "Server created\n";
+    }
+    ~Server() {
+        std::cout << "Server destroyed\n";
+    }
     int listenForLogin() {
         data_formater->setMessageAvailableCallback(onLoginRequest);
         data_formater->onMessageAvailable();
     }
+    int listenForMessage() {
+        data_formater->setMessageAvailableCallback(onChatMessage);
+        data_formater->listenForMessage();
+    }
     static int onLoginRequest() {
-        std::cout << "onLoginRequest\n";
-        return 0;
+        Server* server = new Server();
+        return server -> listenForLogin();
     }
     static int onChatMessage() {
-        return 0;
+        Server* server = new Server();
+        return server -> handleMessage(server->parse(new char[1]));
     }
 };
