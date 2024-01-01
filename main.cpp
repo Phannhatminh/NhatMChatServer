@@ -1,8 +1,10 @@
 #include <iostream>
+#include <string>
 #include "server.cpp"
 
 int main() {
-    Server server;
+    std::string s = "Hello";   
+    Server& server = Server::getInstance();
     std::cout << "Hello, World!\n";
     return 0;
 }

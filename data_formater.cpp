@@ -5,7 +5,7 @@
 class DataFormater {
 private:
     CallbackFunction callback;
-    SessionManager* session_manager;
+    SessionManager* session_manager = &SessionManager::getInstance();
     Parser* parser;
     Message* parse(char* buffer) {
         return parser->parse(buffer);
@@ -13,12 +13,19 @@ private:
     char* format(char* buffer) {
         return new char[1];
     }
-public:
     DataFormater() {
         std::cout << "DataFormater created\n";
     }
     ~DataFormater() {
         std::cout << "DataFormater destroyed\n";
+    }
+    // Make sure that there is at most one instance of DataFormater
+    DataFormater(const DataFormater&) = delete; // delete copy constructor
+    DataFormater& operator=(const DataFormater&) = delete;
+public:
+    static DataFormater& getInstance() {
+        static DataFormater instance;
+        return instance;
     }
     int send(char* buffer) {
         return session_manager->send(format(buffer));
@@ -35,16 +42,14 @@ public:
         session_manager->haveNoSession();
     }
     static int onMessageAvailable() {
-        DataFormater* data_formater = new DataFormater();
-        if (data_formater->session_manager->checkSession()) {
+        if (DataFormater::getInstance().session_manager->checkSession()) {
             //parse the message
-            data_formater->callback(); //a callback to the server
+            DataFormater::getInstance().callback(); //a callback to the server
         }
     }
     static int onLoginRequest() {
-        DataFormater* data_formater = new DataFormater();
-        if (data_formater->session_manager->checkSession()) {
-            data_formater->callback(); //a callback to the server
+        if (DataFormater::getInstance().session_manager->checkSession()) {
+            DataFormater::getInstance().callback(); //a callback to the server
         }
     }
 };

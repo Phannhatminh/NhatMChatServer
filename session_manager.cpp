@@ -8,12 +8,19 @@ private:
     CallbackFunction callback;
     std::map<std::string, int> sessions;
     Parser* parser;
-public:
     SessionManager() {
         std::cout << "SessionManager created\n";
     }
     ~SessionManager() {
         std::cout << "SessionManager destroyed\n";
+    }
+    // Make sure that there is at most one instance of SessionManager
+    SessionManager(const SessionManager&) = delete; // delete copy constructor
+    SessionManager& operator=(const SessionManager&) = delete;
+public:
+    static SessionManager& getInstance() {
+        static SessionManager instance;
+        return instance;
     }
     int createSession() {
         return 0;

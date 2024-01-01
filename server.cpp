@@ -5,8 +5,8 @@
 
 class Server {
 private:
-    UserHandler* userHandler;
-    DataFormater* data_formater;
+    UserHandler* userHandler = &UserHandler::getInstance();
+    DataFormater* data_formater = &DataFormater::getInstance();
     Parser* parser;
 
     int send(Message* message) {
@@ -24,12 +24,19 @@ private:
     int handleLoginRequest() {
         return 0;
     }
-public:
     Server() {
         std::cout << "Server created\n";
     }
     ~Server() {
         std::cout << "Server destroyed\n";
+    }
+    // Make sure that there is at most one instance of Server
+    Server(const Server&) = delete; // delete copy constructor
+    Server& operator=(const Server&) = delete;
+public:
+    static Server& getInstance() {
+        static Server instance;
+        return instance;
     }
     int listenForLogin() {
         data_formater->setMessageAvailableCallback(onLoginRequest);
@@ -40,11 +47,9 @@ public:
         data_formater->listenForMessage();
     }
     static int onLoginRequest() {
-        Server* server = new Server();
-        return server -> listenForLogin();
+        return Server::getInstance().handleLoginRequest();
     }
     static int onChatMessage() {
-        Server* server = new Server();
-        return server -> handleMessage(server->parse(new char[1]));
+        return Server::getInstance().handleMessage(Server::getInstance().parse(new char[1]));
     }
 };
